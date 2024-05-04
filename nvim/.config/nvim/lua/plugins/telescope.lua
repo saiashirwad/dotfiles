@@ -20,8 +20,12 @@ M.dependencies = {
 M.keys = function()
   local telescope = require 'telescope.builtin'
 
-  local find_files_in_config = function()
-    telescope.find_files { search_dirs = { '~/.config' } }
+  local find_files_in_dotfiles = function()
+    telescope.find_files { search_dirs = { '~/dotfiles' }, hidden = true}
+  end
+
+  local grep_dotfiles = function()
+    telescope.live_grep { search_dirs = { '~/dotfiles' }, hidden = true }
   end
 
   local find_files_in_nvim = function()
@@ -30,7 +34,8 @@ M.keys = function()
 
   return {
     { '<C-f>f', telescope.find_files },
-    { '<C-f>c', find_files_in_config },
+    { '<C-f>c', find_files_in_dotfiles },
+    { '<C-f>C', grep_dotfiles },
     { '<C-f>v', find_files_in_nvim },
     { '<C-f>w', telescope.live_grep },
     { '<C-f>l', telescope.resume },
@@ -38,6 +43,16 @@ M.keys = function()
     { '<C-f>b', telescope.help_tags },
     { '<C-f>s', telescope.lsp_document_symbols },
     { '<C-f>d', telescope.diagnostics },
+
+    { '<leader>ff', telescope.find_files },
+    { '<leader>fc', find_files_in_dotfiles },
+    { '<leader>fC', grep_dotfiles },
+    { '<leader>fv', find_files_in_nvim },
+    { '<leader>fw', telescope.live_grep },
+    { '<leader>fl', telescope.resume },
+    { '<leader>fb', telescope.buffers },
+    { '<leader>fs', telescope.lsp_document_symbols },
+    { '<leader>fd', telescope.diagnostics },
   }
 end
 

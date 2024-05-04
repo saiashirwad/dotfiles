@@ -41,16 +41,29 @@ require('texoport').init {
       'nvim-lua/plenary.nvim',
     },
     config = function()
-      vim.keymap.set('n', '<C-f>g', '<cmd>LazyGit<CR>')
+      vim.keymap.set('n', '<leader>lg', '<cmd>LazyGit<CR>')
     end,
   },
   {
     'stevearc/oil.nvim',
-    opts = {},
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    keys = {
-      { '<C-f><C-o>', ':Oil<CR>', { desc = 'Open Oil' } },
+    opts = {
+      view_options = {
+        show_hidden = true,
+      },
+      float = {
+        padding = 0,
+        max_width = 30,
+        max_height = 30,
+      },
     },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    keys = function()
+      local oil = require 'oil'
+      return {
+        { '<C-f><C-o>', oil.open  },
+        { '<leader>fo', oil.open_float },
+      }
+    end,
   },
   { 'duane9/nvim-rg' },
   {
@@ -75,7 +88,7 @@ require('texoport').init {
     event = 'BufRead',
     opts = {},
     keys = {
-      { '<C-s>r', '<cmd>Spectre<CR>' },
+      { '<leader>sr', '<cmd>Spectre<CR>' },
     },
   },
   {
