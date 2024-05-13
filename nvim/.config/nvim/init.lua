@@ -4,10 +4,19 @@ require('texoport').init {
   require 'plugins.copilot',
   require 'plugins.formatter',
   require 'plugins.lint',
+  require 'plugins.trouble',
   require 'plugins.lspconfig',
   require 'plugins.neo_tree',
   require 'plugins.telescope',
   require 'plugins.treesitter',
+  {
+    'folke/neodev.nvim',
+    opts = {},
+    init = function()
+      local neodev = require 'neodev'
+      neodev.setup()
+    end,
+  },
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
@@ -60,28 +69,62 @@ require('texoport').init {
     keys = function()
       local oil = require 'oil'
       return {
-        { '<C-f><C-o>', oil.open  },
+        { '<C-f><C-o>', oil.open },
         { '<leader>fo', oil.open_float },
       }
     end,
   },
   { 'duane9/nvim-rg' },
+  -- {
+  --   'maxmx03/solarized.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   opts = {
+  --     styles = {
+  --       comments = { italic = false, bold = false },
+  --       functions = { italic = false },
+  --       variables = { italic = false },
+  --     },
+  --   },
+  --   init = function()
+  --     vim.o.background = 'dark'
+  --     vim.cmd.colorscheme 'solarized'
+  --   end,
+  -- },
+  -- {
+  --   'Mofiqul/dracula.nvim',
+  --   lazy = false,
+  --   opts = {},
+  --   init = function()
+  --     vim.cmd 'colorscheme dracula'
+  --   end,
+  -- },
   {
-    'maxmx03/solarized.nvim',
+    'Mofiqul/vscode.nvim',
     lazy = false,
-    priority = 1000,
-    opts = {
-      styles = {
-        comments = { italic = false, bold = false },
-        functions = { italic = false },
-        variables = { italic = false },
-      },
-    },
-    config = function()
-      vim.o.background = 'dark'
-      vim.cmd.colorscheme 'solarized'
+    opts = {},
+    init = function()
+      vim.cmd 'colorscheme vscode'
     end,
   },
+
+  -- {
+  --   'oxfist/night-owl.nvim',
+  --   lazy = false, -- make sure we load this during startup if it is your main colorscheme
+  --   priority = 1000, -- make sure to load this before all the other start plugins
+  --
+  --   opts = {
+  --     -- These are the default settings
+  --     bold = true,
+  --     italics = false,
+  --     underline = true,
+  --     undercurl = true,
+  --     transparent_background = false,
+  --   },
+  --   init = function()
+  --     vim.cmd.colorscheme 'night-owl'
+  --   end,
+  -- },
   {
     'nvim-pack/nvim-spectre',
     lazy = false,
@@ -121,4 +164,31 @@ require('texoport').init {
       }
     end,
   },
+
+  { 'echasnovski/mini.tabline', version = false, opts = {} },
+  {
+    'tiagovla/scope.nvim',
+    opts = {},
+  },
+  { 'echasnovski/mini.colors', version = '*', opts = {} },
+  { 'echasnovski/mini.statusline', version = '*', opts = {} },
+  {
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    opts = {},
+  },
+  -- {
+  --   'supermaven-inc/supermaven-nvim',
+  --   opts = {
+  --     keymaps = {
+  --       accept_suggestion = '<Tab>',
+  --       clear_suggestion = '<C-]>',
+  --     },
+  --     ignore_filetypes = { cpp = true },
+  --     -- color = {
+  --     --   suggestion_color = '#ffffff',
+  --     --   cterm = 244,
+  --     -- },
+  --   },
+  -- },
 }

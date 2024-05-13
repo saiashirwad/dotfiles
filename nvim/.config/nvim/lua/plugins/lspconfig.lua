@@ -14,10 +14,6 @@ M.dependencies = {
   },
   'williamboman/mason-lspconfig.nvim',
   'WhoIsSethDaniel/mason-tool-installer.nvim',
-  {
-    'folke/neodev.nvim',
-    opts = {},
-  },
   { 'j-hui/fidget.nvim', opts = {} },
   'nvim-telescope/telescope.nvim',
 }
@@ -80,16 +76,18 @@ for _, value in pairs(server_names) do
 end
 
 M.config = function()
+  require('neodev').setup {}
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
     callback = function()
+      local telescope = require 'telescope.builtin'
       set_keymaps {
-        { 'n', 'gd', require('telescope.builtin').lsp_definitions },
-        { 'n', 'gr', require('telescope.builtin').lsp_references },
-        { 'n', 'gI', require('telescope.builtin').lsp_implementations },
+        { 'n', 'gd', telescope.lsp_definitions },
+        { 'n', 'gr', telescope.lsp_references },
+        { 'n', 'gI', telescope.lsp_implementations },
         { 'n', '<C-g><C-d>', require('telescope.builtin').lsp_type_definitions },
         { 'n', 'rn', vim.lsp.buf.rename },
-        { 'n', '<C-c>c', vim.lsp.buf.code_action },
+        { 'n', '<leader>ca', vim.lsp.buf.code_action },
         { 'n', 'K', vim.lsp.buf.hover },
         { 'n', 'gD', vim.lsp.buf.declaration },
       }
@@ -97,7 +95,6 @@ M.config = function()
   })
 
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
   require('mason').setup()
 

@@ -1,7 +1,7 @@
 vim.opt.breakindent = true
 vim.opt.clipboard = 'unnamedplus'
-vim.opt.cursorline = true
-vim.opt.cursorlineopt = 'screenline'
+vim.opt.cursorline = false
+vim.opt.cursorlineopt = 'line'
 vim.opt.expandtab = true
 vim.opt.hlsearch = false
 vim.opt.ignorecase = true
