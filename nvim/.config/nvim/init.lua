@@ -166,10 +166,6 @@ require('texoport').init {
   },
 
   { 'echasnovski/mini.tabline', version = false, opts = {} },
-  {
-    'tiagovla/scope.nvim',
-    opts = {},
-  },
   { 'echasnovski/mini.colors', version = '*', opts = {} },
   { 'echasnovski/mini.statusline', version = '*', opts = {} },
   {

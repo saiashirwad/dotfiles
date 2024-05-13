@@ -9,6 +9,7 @@ set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH "$HOME/.pub-cache/bin" $PATH
 set --export PATH $BUN_INSTALL/bin $PATH
 set --export PATH "$HOME/.local/bin" $PATH
+set --export PATH "$HOME/code/stax/" $PATH
 set --export PATH "$HOME/flutter/bin" $PATH
 set --export PATH "/opt/homebrew/bin" $PATH
 set --export PATH "$HOME/.cabal/bin" $PATH
