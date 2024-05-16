@@ -75,56 +75,23 @@ require('texoport').init {
     end,
   },
   { 'duane9/nvim-rg' },
-  -- {
-  --   'maxmx03/solarized.nvim',
-  --   lazy = false,
-  --   priority = 1000,
-  --   opts = {
-  --     styles = {
-  --       comments = { italic = false, bold = false },
-  --       functions = { italic = false },
-  --       variables = { italic = false },
-  --     },
-  --   },
-  --   init = function()
-  --     vim.o.background = 'dark'
-  --     vim.cmd.colorscheme 'solarized'
-  --   end,
-  -- },
-  -- {
-  --   'Mofiqul/dracula.nvim',
-  --   lazy = false,
-  --   opts = {},
-  --   init = function()
-  --     vim.cmd 'colorscheme dracula'
-  --   end,
-  -- },
   {
-    'Mofiqul/vscode.nvim',
-    lazy = false,
-    opts = {},
+    'oxfist/night-owl.nvim',
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+
+    opts = {
+      -- These are the default settings
+      bold = true,
+      italics = false,
+      underline = true,
+      undercurl = true,
+      transparent_background = false,
+    },
     init = function()
-      vim.cmd 'colorscheme vscode'
+      vim.cmd.colorscheme 'night-owl'
     end,
   },
-
-  -- {
-  --   'oxfist/night-owl.nvim',
-  --   lazy = false, -- make sure we load this during startup if it is your main colorscheme
-  --   priority = 1000, -- make sure to load this before all the other start plugins
-  --
-  --   opts = {
-  --     -- These are the default settings
-  --     bold = true,
-  --     italics = false,
-  --     underline = true,
-  --     undercurl = true,
-  --     transparent_background = false,
-  --   },
-  --   init = function()
-  --     vim.cmd.colorscheme 'night-owl'
-  --   end,
-  -- },
   {
     'nvim-pack/nvim-spectre',
     lazy = false,
@@ -164,27 +131,10 @@ require('texoport').init {
       }
     end,
   },
-
-  { 'echasnovski/mini.tabline', version = false, opts = {} },
   { 'echasnovski/mini.colors', version = '*', opts = {} },
-  { 'echasnovski/mini.statusline', version = '*', opts = {} },
   {
     'akinsho/toggleterm.nvim',
     version = '*',
     opts = {},
   },
-  -- {
-  --   'supermaven-inc/supermaven-nvim',
-  --   opts = {
-  --     keymaps = {
-  --       accept_suggestion = '<Tab>',
-  --       clear_suggestion = '<C-]>',
-  --     },
-  --     ignore_filetypes = { cpp = true },
-  --     -- color = {
-  --     --   suggestion_color = '#ffffff',
-  --     --   cterm = 244,
-  --     -- },
-  --   },
-  -- },
 }

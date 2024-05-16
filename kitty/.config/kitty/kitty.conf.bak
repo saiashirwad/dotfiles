@@ -18,15 +18,20 @@ map ctrl+down resize_window shorter 3
 include night-owl.conf
 # include catppuccin.conf
 
-font_family Comic Code
-# font_family JetbrainsMono Nerd Font Regular
+#font_family Comic Code
+font_family JetbrainsMono Nerd Font Regular
 # font_family DroidSansMono Nerd Font
 # font_family CodeNewRoman Nerd Font Mono
 # font_family Dank Mono
 # font_family Iosevka
 # font_family MonoLisa
 
-# font_family Fira Code
+font_family Fira Code
 # font_family Source Code Pro
-font_size 20
+font_size 17
 
+
+# BEGIN_KITTY_THEME
+# Warm Neon
+include current-theme.conf
+# END_KITTY_THEME
