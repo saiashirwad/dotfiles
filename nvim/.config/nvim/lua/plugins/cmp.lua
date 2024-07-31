@@ -5,34 +5,24 @@ local M = {
 }
 
 M.dependencies = {
-  {
-    'L3MON4D3/LuaSnip',
-    build = (function()
-      if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-        return
-      end
-      return 'make install_jsregexp'
-    end)(),
-  },
-  'saadparwaiz1/cmp_luasnip',
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-path',
+  'onsails/lspkind-nvim',
+  {
+    'quangnguyen30192/cmp-nvim-tags',
+    ft = {
+      'ruby',
+    },
+  },
 }
 
 M.config = function()
   local cmp = require 'cmp'
-  local luasnip = require 'luasnip'
-  luasnip.config.setup {}
+  local lspkind = require 'lspkind'
 
   cmp.setup {
-    snippet = {
-      expand = function(args)
-        luasnip.lsp_expand(args.body)
-      end,
-    },
     completion = {
       completeopt = 'menu,menuone,noinsert',
-      -- autocomplete = false
     },
     mapping = cmp.mapping.preset.insert {
       ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -42,21 +32,50 @@ M.config = function()
       ['<C-y>'] = cmp.mapping.confirm { select = true },
       ['<CR>'] = cmp.mapping.confirm { select = true },
       ['<C-Space>'] = cmp.mapping.complete {},
-      ['<C-l>'] = cmp.mapping(function()
-        if luasnip.expand_or_locally_jumpable() then
-          luasnip.expand_or_jump()
-        end
-      end, { 'i', 's' }),
-      ['<C-h>'] = cmp.mapping(function()
-        if luasnip.locally_jumpable(-1) then
-          luasnip.jump(-1)
-        end
-      end, { 'i', 's' }),
     },
     sources = {
       { name = 'nvim_lsp' },
       { name = 'luasnip' },
       { name = 'path' },
+      { name = 'neorg' },
+      {
+        name = 'tags',
+        option = {
+          -- this is the default options, change them if you want.
+          -- Delayed time after user input, in milliseconds.
+          complete_defer = 100,
+          -- Max items when searching `taglist`.
+          max_items = 10,
+          -- The number of characters that need to be typed to trigger
+          -- auto-completion.
+          keyword_length = 3,
+          -- Use exact word match when searching `taglist`, for better searching
+          -- performance.
+          exact_match = false,
+          -- Prioritize searching result for current buffer.
+          current_buffer_only = false,
+        },
+      },
+    },
+    formatting = {
+      fields = { 'kind', 'abbr', 'menu' },
+      expandable_indicator = true,
+      format = lspkind.cmp_format {
+        mode = 'symbol_text',
+        maxwidth = 50,
+        ellipsis_char = '...',
+        before = function(entry, vim_item)
+          vim_item.menu = ({
+            nvim_lsp = '[LSP]',
+            path = '[Path]',
+          })[entry.source.name]
+          return vim_item
+        end,
+      },
+    },
+    window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
     },
   }
 end

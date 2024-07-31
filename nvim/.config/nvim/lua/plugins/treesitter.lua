@@ -5,7 +5,7 @@ local M = {
 }
 
 M.dependencies = {
-  'windwp/nvim-ts-autotag',
+  'nvim-treesitter/playground',
 }
 
 M.opts = {
@@ -14,11 +14,10 @@ M.opts = {
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = { 'ruby' },
+    disable = { 'rescript' },
   },
-  indent = { enable = true, disable = { 'ruby' } },
-  autotag = {
-    enable = true,
-  },
+  folding = { enable = false },
+  indent = { enable = false, disable = { 'ruby' } },
   incremental_selection = {
     enable = true,
     keymaps = {

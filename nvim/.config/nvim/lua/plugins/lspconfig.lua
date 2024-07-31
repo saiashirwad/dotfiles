@@ -4,18 +4,16 @@ local set_keymaps = utils.set_keymaps
 ---@type LazyPluginSpec
 local M = {
   'neovim/nvim-lspconfig',
-}
-
-M.dependencies = {
-  { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
-  {
-    'folke/neodev.nvim',
-    opts = {},
+  event = { 'BufReadPre', 'BufNewFile' },
+  dependencies = {
+    'aspeddro/rescript-tools.nvim',
+    { 'williamboman/mason.nvim', config = true },
+    { 'folke/neodev.nvim', opts = {} },
+    'williamboman/mason-lspconfig.nvim',
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+    { 'j-hui/fidget.nvim', opts = {} },
+    'nvim-telescope/telescope.nvim',
   },
-  'williamboman/mason-lspconfig.nvim',
-  'WhoIsSethDaniel/mason-tool-installer.nvim',
-  { 'j-hui/fidget.nvim', opts = {} },
-  'nvim-telescope/telescope.nvim',
 }
 
 local organize_imports = function()
@@ -26,26 +24,6 @@ local organize_imports = function()
   vim.lsp.buf.execute_command(params)
 end
 
-local server_names = {
-  'html',
-  'cssls',
-  'marksman',
-  'volar',
-  'clangd',
-  'ocamllsp',
-  'hls',
-  'biome',
-  'elmls',
-  'prismals',
-  'svelte',
-  'jsonls',
-  'pyright',
-  'rust_analyzer',
-  'astro',
-  'purescriptls',
-  'clojure_lsp',
-}
-
 local servers = {
   tsserver = {
     commands = {
@@ -55,7 +33,6 @@ local servers = {
       },
     },
   },
-
   lua_ls = {
     settings = {
       Lua = {
@@ -65,57 +42,79 @@ local servers = {
       },
     },
   },
-
   hls = {
     filetypes = { 'haskell', 'lhaskell', 'cabal' },
   },
+  rescriptls = {},
 }
 
-for _, value in pairs(server_names) do
-  servers[value] = {}
+local server_names = {
+  'html',
+  'cssls',
+  'marksman',
+  'volar',
+  'clangd',
+  'elmls',
+  'prismals',
+  'svelte',
+  'jsonls',
+  -- 'pyright',
+  'rust_analyzer',
+  'astro',
+  'purescriptls',
+  'clojure_lsp',
+  'ocamllsp',
+  'zls',
+}
+
+for _, name in ipairs(server_names) do
+  servers[name] = servers[name] or {}
 end
 
 M.config = function()
-  require('neodev').setup {}
+  require('neodev').setup()
+
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
-    callback = function()
+    callback = function(ev)
       local telescope = require 'telescope.builtin'
+      local opts = { buffer = ev.buf }
       set_keymaps {
-        { 'n', 'gd', telescope.lsp_definitions },
-        { 'n', 'gr', telescope.lsp_references },
-        { 'n', 'gI', telescope.lsp_implementations },
-        { 'n', '<C-g><C-d>', require('telescope.builtin').lsp_type_definitions },
-        { 'n', 'rn', vim.lsp.buf.rename },
-        { 'n', '<leader>ca', vim.lsp.buf.code_action },
-        { 'n', 'K', vim.lsp.buf.hover },
-        { 'n', 'gD', vim.lsp.buf.declaration },
+        { 'n', 'K', vim.lsp.buf.hover, opts },
+        { 'n', 'gr', telescope.lsp_references, opts },
+        { 'n', 'gd', telescope.lsp_definitions, opts },
+        { 'n', 'gI', telescope.lsp_implementations, opts },
+        { 'n', 'rn', vim.lsp.buf.rename, opts },
+        { 'n', '<leader>ca', vim.lsp.buf.code_action, opts },
+        { 'n', 'gD', vim.lsp.buf.declaration, opts },
       }
     end,
   })
 
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-  require('mason').setup()
-
   local ensure_installed = vim.tbl_keys(servers)
   vim.list_extend(ensure_installed, { 'stylua' })
 
-  local lspconfig = require 'lspconfig'
-
   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-  lspconfig['dartls'].setup {}
 
   require('mason-lspconfig').setup {
     handlers = {
       function(server_name)
         local server = servers[server_name] or {}
         server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-        lspconfig[server_name].setup(server)
+        require('lspconfig')[server_name].setup(server)
       end,
     },
   }
 end
+
+vim.diagnostic.config {
+  virtual_text = false,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
+  signs = true,
+}
 
 return M

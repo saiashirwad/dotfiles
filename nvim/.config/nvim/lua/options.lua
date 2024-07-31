@@ -6,15 +6,15 @@ vim.opt.expandtab = true
 vim.opt.hlsearch = false
 vim.opt.ignorecase = true
 vim.opt.inccommand = 'split'
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+-- vim.opt.list = true
+-- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 vim.opt.mouse = 'a'
--- vim.opt.number = true
+vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 6
 vim.opt.shiftwidth = 2
 vim.opt.showmode = false
-vim.opt.signcolumn = 'no'
+vim.opt.signcolumn = 'number'
 vim.opt.smartcase = true
 vim.opt.softtabstop = 2
 vim.opt.splitbelow = true

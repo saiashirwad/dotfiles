@@ -58,7 +58,7 @@ return {
       information = '',
       other = '',
     },
-    use_diagnostic_signs = false, -- enabling this will use the signs defined in your lsp client
+    use_diagnostic_signs = true, -- enabling this will use the signs defined in your lsp client
   },
   config = function()
     vim.keymap.set('n', '<leader>xx', function()

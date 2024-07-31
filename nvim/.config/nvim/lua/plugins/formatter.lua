@@ -26,11 +26,15 @@ M.opts = {
     c = { 'clang-format' },
     cpp = { 'clang-format' },
     elm = { 'elm-format' },
+    rust = { 'rustfmt' },
     purescript = { 'purty' },
     clojure = { 'cljstyle' },
     clojuredart = { 'cljstyle' },
     cljd = { 'cljstyle' },
     fennel = { 'fnlfmt' },
+    dart = { 'dart_format' },
+    rescript = { 'rescript' },
+    zig = { 'zig' },
   },
   formatters = {
     prisma = {

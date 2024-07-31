@@ -21,7 +21,7 @@ M.keys = function()
   local telescope = require 'telescope.builtin'
 
   local find_files_in_dotfiles = function()
-    telescope.find_files { search_dirs = { '~/dotfiles' }, hidden = true}
+    telescope.find_files { search_dirs = { '~/dotfiles' }, hidden = true }
   end
 
   local grep_dotfiles = function()
@@ -33,17 +33,6 @@ M.keys = function()
   end
 
   return {
-    { '<C-f>f', telescope.find_files },
-    { '<C-f>c', find_files_in_dotfiles },
-    { '<C-f>C', grep_dotfiles },
-    { '<C-f>v', find_files_in_nvim },
-    { '<C-f>w', telescope.live_grep },
-    { '<C-f>l', telescope.resume },
-    { '<C-f>b', telescope.buffers },
-    { '<C-f>b', telescope.help_tags },
-    { '<C-f>s', telescope.lsp_document_symbols },
-    { '<C-f>d', telescope.diagnostics },
-
     { '<leader>ff', telescope.find_files },
     { '<leader>fc', find_files_in_dotfiles },
     { '<leader>fC', grep_dotfiles },
@@ -56,14 +45,21 @@ M.keys = function()
   }
 end
 
-M.opts = {
-  path_display = { 'filename_first' },
-}
-
 M.config = function()
   for _, value in pairs { 'fzf', 'ui-select' } do
     pcall(require('telescope').load_extension, value)
   end
+
+  local open_with_trouble = require('trouble.sources.telescope').open
+  require('telescope').setup {
+    path_display = { 'filename_first' },
+    defaults = {
+      mappings = {
+        i = { ['<c-t>'] = open_with_trouble },
+        n = { ['<c-t>'] = open_with_trouble },
+      },
+    },
+  }
 end
 
 return M

@@ -1,0 +1,10 @@
+name: outroute
+root: ~/outroute
+
+windows:
+  - client: bun dev:client
+  - server: bun dev:server
+  - stripe: bun dev:stripe
+  - workers: bun dev:workers
+  - ngrok: ngrok http --domain=normal-herring-slightly.ngrok-free.app 3001
+  - nvim: nvim
