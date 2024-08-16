@@ -1,8 +1,0 @@
-#!/bin/bash
-
-stow fish
-stow kitty
-stow nvim
-stow omf
-stow starship
-stow tmux
