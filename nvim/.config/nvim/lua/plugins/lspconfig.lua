@@ -25,7 +25,15 @@ local organize_imports = function()
 end
 
 local servers = {
-  tsserver = {
+  -- tsserver = {
+  --   commands = {
+  --     OrganizeImports = {
+  --       organize_imports,
+  --       description = 'Organize Imports',
+  --     },
+  --   },
+  -- },
+  vtsls = {
     commands = {
       OrganizeImports = {
         organize_imports,
@@ -42,15 +50,16 @@ local servers = {
       },
     },
   },
-  hls = {
-    filetypes = { 'haskell', 'lhaskell', 'cabal' },
-  },
+  -- hls = {
+  --   filetypes = { 'haskell', 'lhaskell', 'cabal' },
+  -- },
   rescriptls = {},
 }
 
 local server_names = {
   'html',
   'cssls',
+  'swift_mesonls',
   'marksman',
   'volar',
   'clangd',
@@ -63,7 +72,7 @@ local server_names = {
   'astro',
   'purescriptls',
   'clojure_lsp',
-  'ocamllsp',
+  -- 'ocamllsp',
   'zls',
 }
 

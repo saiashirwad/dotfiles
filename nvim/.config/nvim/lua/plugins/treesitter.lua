@@ -12,7 +12,7 @@ M.opts = {
   ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
   auto_install = true,
   highlight = {
-    enable = true,
+    enable = false,
     additional_vim_regex_highlighting = { 'ruby' },
     disable = { 'rescript' },
   },

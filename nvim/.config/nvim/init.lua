@@ -1,13 +1,91 @@
+vim.opt.grepprg = 'rg --vimgrep'
+vim.opt.grepformat = '%f:%l:%c:%m'
+
 require('texoport').init {
   require 'plugins.cmp',
   require 'plugins.lint',
   require 'plugins.comment',
   require 'plugins.neorg',
   require 'plugins.formatter',
+  require 'plugins.lualine',
   require 'plugins.lspconfig',
   require 'plugins.telescope',
   require 'plugins.treesitter',
-  require 'plugins.lualine',
+
+  {
+    'brenton-leighton/multiple-cursors.nvim',
+    version = '*', -- Use the latest tagged version
+    opts = {}, -- This causes the plugin setup function to be called
+    keys = {
+      { '<C-j>', '<Cmd>MultipleCursorsAddDown<CR>', mode = { 'n', 'x' }, desc = 'Add cursor and move down' },
+      { '<C-k>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n', 'x' }, desc = 'Add cursor and move up' },
+
+      { '<C-Up>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n', 'i', 'x' }, desc = 'Add cursor and move up' },
+      { '<C-Down>', '<Cmd>MultipleCursorsAddDown<CR>', mode = { 'n', 'i', 'x' }, desc = 'Add cursor and move down' },
+
+      { '<C-LeftMouse>', '<Cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i' }, desc = 'Add or remove cursor' },
+
+      { '<Leader>a', '<Cmd>MultipleCursorsAddMatches<CR>', mode = { 'n', 'x' }, desc = 'Add cursors to cword' },
+      { '<Leader>A', '<Cmd>MultipleCursorsAddMatchesV<CR>', mode = { 'n', 'x' }, desc = 'Add cursors to cword in previous area' },
+
+      { '<Leader>d', '<Cmd>MultipleCursorsAddJumpNextMatch<CR>', mode = { 'n', 'x' }, desc = 'Add cursor and jump to next cword' },
+      { '<Leader>D', '<Cmd>MultipleCursorsJumpNextMatch<CR>', mode = { 'n', 'x' }, desc = 'Jump to next cword' },
+
+      { '<Leader>l', '<Cmd>MultipleCursorsLock<CR>', mode = { 'n', 'x' }, desc = 'Lock virtual cursors' },
+    },
+  },
+
+  {
+    'projekt0n/github-nvim-theme',
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require('github-theme').setup {
+        -- ...
+      }
+
+      vim.cmd 'colorscheme github_light'
+    end,
+  },
+
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    init = function()
+      local harpoon = require 'harpoon'
+
+      harpoon:setup()
+
+      vim.keymap.set('n', '<leader>a', function()
+        harpoon:list():add()
+      end)
+      vim.keymap.set('n', '<C-e>', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end)
+
+      vim.keymap.set('n', '<C-f>h', function()
+        harpoon:list():select(1)
+      end)
+      vim.keymap.set('n', '<C-f>j', function()
+        harpoon:list():select(2)
+      end)
+      vim.keymap.set('n', '<C-f>k', function()
+        harpoon:list():select(3)
+      end)
+      vim.keymap.set('n', '<C-f>l', function()
+        harpoon:list():select(4)
+      end)
+
+      -- Toggle previous & next buffers stored within Harpoon list
+      vim.keymap.set('n', '<C-S-P>', function()
+        harpoon:list():prev()
+      end)
+      vim.keymap.set('n', '<C-S-N>', function()
+        harpoon:list():next()
+      end)
+    end,
+  },
 
   {
     'folke/neodev.nvim',
@@ -31,6 +109,7 @@ require('texoport').init {
       require('better_escape').setup()
     end,
   },
+
   {
     'folke/flash.nvim',
     event = 'VeryLazy',
@@ -96,7 +175,7 @@ require('texoport').init {
     end,
   },
 
-  { 'mg979/vim-visual-multi', lazy = false },
+  -- { 'mg979/vim-visual-multi', lazy = false },
 
   {
     'alexghergh/nvim-tmux-navigation',
@@ -136,7 +215,7 @@ require('texoport').init {
         clear_suggestion = '<C-]>',
         accept_word = '<C-j>',
       },
-      ignore_filetypes = { cpp = true },
+      ignore_filetypes = { cpp = true, python = true },
       color = {
         suggestion_color = '#a1a1aa',
         cterm = 244,
@@ -269,16 +348,6 @@ require('texoport').init {
     config = function()
       vim.keymap.set('n', '<leader>do', '<cmd>DiffviewOpen<CR>')
       vim.keymap.set('n', '<leader>dO', '<cmd>DiffviewClose<CR>')
-    end,
-  },
-
-  {
-    'folke/tokyonight.nvim',
-    lazy = false,
-    priority = 1000,
-    opts = {},
-    init = function()
-      vim.cmd 'colorscheme tokyonight-night'
     end,
   },
 
