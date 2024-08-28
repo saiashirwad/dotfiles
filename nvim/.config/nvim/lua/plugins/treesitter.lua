@@ -6,10 +6,8 @@ local M = {
 
 M.dependencies = {
   'nvim-treesitter/playground',
-}
+  sure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
 
-M.opts = {
-  ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
   auto_install = true,
   highlight = {
     enable = false,

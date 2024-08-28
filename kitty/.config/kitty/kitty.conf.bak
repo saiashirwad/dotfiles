@@ -1,5 +1,4 @@
 allow_remote_control yes 
-scrollback_page nvim
 disable_ligatures always
 sync_to_monitor no
 term xterm-256color
@@ -15,10 +14,17 @@ map ctrl+down resize_window shorter 3
 hide_window_decorations no
 
 macos_option_as_alt yes
-font_family IBM Plex Mono
-font_size 19
+font_size 17
 
-cursor_shape block
-shell_integration no-cursor
+# BEGIN_KITTY_FONTS
+font_family      family="Iosevka"
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+# END_KITTY_FONTS
 
+
+# BEGIN_KITTY_THEME
+# GitHub Light
 include current-theme.conf
+# END_KITTY_THEME

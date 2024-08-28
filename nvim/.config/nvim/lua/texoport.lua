@@ -1,6 +1,7 @@
 local M = {}
 
 require 'types'
+require 'commands'
 
 ---@param plugins LazyPluginSpec[]
 M.init = function(plugins)

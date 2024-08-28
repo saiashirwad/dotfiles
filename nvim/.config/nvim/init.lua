@@ -1,50 +1,66 @@
 vim.opt.grepprg = 'rg --vimgrep'
 vim.opt.grepformat = '%f:%l:%c:%m'
 
+vim.cmd 'set background=dark'
+
 require('texoport').init {
   require 'plugins.cmp',
   require 'plugins.lint',
   require 'plugins.comment',
   require 'plugins.neorg',
   require 'plugins.formatter',
-  require 'plugins.lualine',
   require 'plugins.lspconfig',
   require 'plugins.telescope',
-  require 'plugins.treesitter',
+  require 'plugins.gemini',
 
   {
-    'brenton-leighton/multiple-cursors.nvim',
-    version = '*', -- Use the latest tagged version
-    opts = {}, -- This causes the plugin setup function to be called
-    keys = {
-      { '<C-j>', '<Cmd>MultipleCursorsAddDown<CR>', mode = { 'n', 'x' }, desc = 'Add cursor and move down' },
-      { '<C-k>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n', 'x' }, desc = 'Add cursor and move up' },
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    dependencies = {
+      'nvim-treesitter/playground',
+      sure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc' },
 
-      { '<C-Up>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n', 'i', 'x' }, desc = 'Add cursor and move up' },
-      { '<C-Down>', '<Cmd>MultipleCursorsAddDown<CR>', mode = { 'n', 'i', 'x' }, desc = 'Add cursor and move down' },
-
-      { '<C-LeftMouse>', '<Cmd>MultipleCursorsMouseAddDelete<CR>', mode = { 'n', 'i' }, desc = 'Add or remove cursor' },
-
-      { '<Leader>a', '<Cmd>MultipleCursorsAddMatches<CR>', mode = { 'n', 'x' }, desc = 'Add cursors to cword' },
-      { '<Leader>A', '<Cmd>MultipleCursorsAddMatchesV<CR>', mode = { 'n', 'x' }, desc = 'Add cursors to cword in previous area' },
-
-      { '<Leader>d', '<Cmd>MultipleCursorsAddJumpNextMatch<CR>', mode = { 'n', 'x' }, desc = 'Add cursor and jump to next cword' },
-      { '<Leader>D', '<Cmd>MultipleCursorsJumpNextMatch<CR>', mode = { 'n', 'x' }, desc = 'Jump to next cword' },
-
-      { '<Leader>l', '<Cmd>MultipleCursorsLock<CR>', mode = { 'n', 'x' }, desc = 'Lock virtual cursors' },
+      auto_install = true,
+      highlight = {
+        enable = false,
+        additional_vim_regex_highlighting = { 'ruby' },
+        disable = { 'rescript' },
+      },
+      folding = { enable = false },
+      indent = { enable = false, disable = { 'ruby' } },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<CR>',
+          node_incremental = '<CR>',
+          scope_incremental = false,
+          node_decremental = '<BS>',
+        },
+      },
     },
+    config = function(_, opts)
+      require('nvim-treesitter.install').prefer_git = true
+      ---@diagnostic disable-next-line: missing-fields
+      require('nvim-treesitter.configs').setup(opts)
+    end,
   },
 
   {
     'projekt0n/github-nvim-theme',
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       require('github-theme').setup {
         -- ...
       }
 
-      vim.cmd 'colorscheme github_light'
+      -- vim.cmd 'colorscheme github_dark_default'
+    end,
+  },
+
+  {
+    'Mofiqul/vscode.nvim',
+    opts = {},
+    config = function()
+      vim.cmd 'colorscheme vscode'
     end,
   },
 
@@ -175,7 +191,7 @@ require('texoport').init {
     end,
   },
 
-  -- { 'mg979/vim-visual-multi', lazy = false },
+  { 'mg979/vim-visual-multi', lazy = false },
 
   {
     'alexghergh/nvim-tmux-navigation',
@@ -207,21 +223,21 @@ require('texoport').init {
     },
   },
 
-  {
-    'supermaven-inc/supermaven-nvim',
-    opts = {
-      keymaps = {
-        accept_suggestion = '<Tab>',
-        clear_suggestion = '<C-]>',
-        accept_word = '<C-j>',
-      },
-      ignore_filetypes = { cpp = true, python = true },
-      color = {
-        suggestion_color = '#a1a1aa',
-        cterm = 244,
-      },
-    },
-  },
+  -- {
+  --   'supermaven-inc/supermaven-nvim',
+  --   opts = {
+  --     keymaps = {
+  --       accept_suggestion = '<Tab>',
+  --       clear_suggestion = '<C-]>',
+  --       accept_word = '<C-j>',
+  --     },
+  --     ignore_filetypes = { cpp = true, python = true },
+  --     color = {
+  --       suggestion_color = '#a1a1aa',
+  --       cterm = 244,
+  --     },
+  --   },
+  -- },
 
   {
     'akinsho/flutter-tools.nvim',
@@ -301,48 +317,6 @@ require('texoport').init {
   },
 
   {
-    'junegunn/fzf',
-    build = function()
-      vim.fn['fzf#install']()
-    end,
-  },
-
-  {
-    'junegunn/fzf.vim',
-    dependencies = { 'junegunn/fzf' },
-  },
-
-  {
-    'kevinhwang91/nvim-bqf',
-    ft = 'qf',
-    dependencies = {
-      {
-        'junegunn/fzf',
-      },
-    },
-    opts = {
-      auto_enable = true,
-      preview = {
-        win_height = 12,
-        win_vheight = 12,
-        delay_syntax = 80,
-        border_chars = { '┃', '┃', '━', '━', '┏', '┓', '┗', '┛', '█' },
-      },
-      func_map = {
-        vsplit = '',
-        ptogglemode = 'z,',
-        stoggleup = '',
-      },
-      filter = {
-        fzf = {
-          action_for = { ['ctrl-s'] = 'split' },
-          extra_opts = { '--bind', 'ctrl-o:toggle-all', '--prompt', '> ' },
-        },
-      },
-    },
-  },
-
-  {
     'sindrets/diffview.nvim',
     opts = {},
     config = function()
@@ -398,12 +372,6 @@ require('texoport').init {
       },
     },
   },
-
-  { 'nkrkv/nvim-treesitter-rescript' },
-
-  { 'rescript-lang/vim-rescript', ft = 'rescript' },
-
-  { 'aspeddro/rescript-tools.nvim' },
 }
 
 if os.getenv 'TERM' == 'xterm-kitty' then

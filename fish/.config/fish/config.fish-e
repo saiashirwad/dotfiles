@@ -4,8 +4,6 @@ if status is-interactive
 end
 
 set EDITOR $(which nvim)
-export GEMINI_API_KEY="AIzaSyDed5NARgmyXrJKkJivkIQVaQYjzE45xlg"
-
 
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH "$HOME/.cabal/bin" $PATH
@@ -26,6 +24,5 @@ set --export PATH "/opt/homebrew/bin" $PATH
 set --export PATH $BUN_INSTALL/bin $PATH
 
 fnm env --use-on-cd | source
-
 
 set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME ; set -gx PATH $HOME/.cabal/bin $PATH /Users/texoport/.ghcup/bin # ghcup-env

@@ -7,18 +7,10 @@ local M = {
 M.dependencies = {
   'hrsh7th/cmp-nvim-lsp',
   'hrsh7th/cmp-path',
-  'onsails/lspkind-nvim',
-  {
-    'quangnguyen30192/cmp-nvim-tags',
-    ft = {
-      'ruby',
-    },
-  },
 }
 
 M.config = function()
   local cmp = require 'cmp'
-  local lspkind = require 'lspkind'
 
   cmp.setup {
     completion = {
@@ -35,9 +27,7 @@ M.config = function()
     },
     sources = {
       { name = 'nvim_lsp' },
-      { name = 'luasnip' },
       { name = 'path' },
-      { name = 'neorg' },
       {
         name = 'tags',
         option = {
@@ -55,22 +45,6 @@ M.config = function()
           -- Prioritize searching result for current buffer.
           current_buffer_only = false,
         },
-      },
-    },
-    formatting = {
-      fields = { 'kind', 'abbr', 'menu' },
-      expandable_indicator = true,
-      format = lspkind.cmp_format {
-        mode = 'symbol_text',
-        maxwidth = 50,
-        ellipsis_char = '...',
-        before = function(entry, vim_item)
-          vim_item.menu = ({
-            nvim_lsp = '[LSP]',
-            path = '[Path]',
-          })[entry.source.name]
-          return vim_item
-        end,
       },
     },
     window = {

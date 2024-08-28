@@ -18,10 +18,28 @@ local M = {
 
 local organize_imports = function()
   local params = {
-    command = '_typescript.organizeImports',
+    command = 'typescript.organizeImports',
     arguments = { vim.api.nvim_buf_get_name(0) },
   }
   vim.lsp.buf.execute_command(params)
+end
+
+local remove_unused = function()
+  local params = {
+    command = 'typescript.removeUnused',
+    arguments = { vim.api.nvim_buf_get_name(0) },
+  }
+  vim.lsp.buf.execute_command(params)
+end
+
+local register_command = function(command)
+  return {
+    function()
+      vim.lsp.buf.execute_command {
+        command = command,
+      }
+    end,
+  }
 end
 
 local servers = {
@@ -37,8 +55,11 @@ local servers = {
     commands = {
       OrganizeImports = {
         organize_imports,
-        description = 'Organize Imports',
       },
+      RemoveUnused = {
+        remove_unused,
+      },
+      TypescriptVersion = register_command 'typescript.',
     },
   },
   lua_ls = {
@@ -50,9 +71,6 @@ local servers = {
       },
     },
   },
-  -- hls = {
-  --   filetypes = { 'haskell', 'lhaskell', 'cabal' },
-  -- },
   rescriptls = {},
 }
 
@@ -72,8 +90,9 @@ local server_names = {
   'astro',
   'purescriptls',
   'clojure_lsp',
-  -- 'ocamllsp',
+  'ocamllsp',
   'zls',
+  'hls',
 }
 
 for _, name in ipairs(server_names) do

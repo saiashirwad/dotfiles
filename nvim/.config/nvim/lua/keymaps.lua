@@ -11,4 +11,11 @@ set_keymaps {
   { 'n', 'N', 'Nzz' },
   { 'n', '[d', vim.diagnostic.goto_prev },
   { 'n', ']d', vim.diagnostic.goto_next },
+  {
+    'n',
+    '<leader>rb',
+    function()
+      vim.cmd [[ !bun run % ]]
+    end,
+  },
 }

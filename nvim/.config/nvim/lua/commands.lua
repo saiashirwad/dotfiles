@@ -1,0 +1,5 @@
+-- vim.api.nvim_create_user_command('LspCommand', function(args)
+--   vim.lsp.buf.execute_command(args.args)
+-- end, {
+--   nargs = 1,
+-- })
